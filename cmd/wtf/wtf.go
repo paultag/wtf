@@ -46,7 +46,11 @@ func main() {
 	app.Version = "0.0.1~alpha1"
 
 	app.Action = func(c *cli.Context) error {
-		for _, word := range c.Args() {
+		args := c.Args()
+		if len(args) > 0 && args[0] == "is" {
+			args = args[1:]
+		}
+		for _, word := range args {
 			if err := wtfIs(word); err != nil {
 				fmt.Printf("Error: %s\n", err)
 			}
