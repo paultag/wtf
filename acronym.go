@@ -8,3 +8,7 @@ type Acronym struct {
 }
 
 type Acronyms []Acronym
+
+func (a Acronym) String() string {
+	return a.Meaning
+}
