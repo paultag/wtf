@@ -60,7 +60,7 @@ func main() {
 		writeError(w, "No such page", 404)
 	})
 
-	panic(http.ListenAndServe(":8000", mux))
+	panic(http.ListenAndServe(":2838", mux))
 }
 
 // vim: foldmethod=marker
