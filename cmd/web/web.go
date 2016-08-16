@@ -56,6 +56,28 @@ func main() {
 		writeJSON(w, acronyms, 200)
 	})
 
+	mux.HandleFunc("/slack/", func(w http.ResponseWriter, req *http.Request) {
+		if err := req.ParseForm(); err != nil {
+			writeError(w, "Error parsing form", 500)
+			return
+		}
+
+		acronym := req.Form.Get("text")
+
+		acronyms := wtf.Acronyms{}
+		if err := db.Unpack(acronym, &acronyms); err != nil {
+			if err == leveldb.ErrNotFound {
+				writeError(w, "No acronym found", 404)
+				return
+			}
+			writeError(w, fmt.Sprintf("Error: %s", err.Error()), 500)
+			return
+		}
+		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+		w.WriteHeader(200)
+		w.Write([]byte(acronyms.String()))
+	})
+
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		writeError(w, "No such page", 404)
 	})
