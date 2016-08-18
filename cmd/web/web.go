@@ -62,7 +62,7 @@ func main() {
 			return
 		}
 
-		acronym := req.Form.Get("text")
+		acronym := strings.ToLower(req.Form.Get("text"))
 
 		acronyms := wtf.Acronyms{}
 		if err := db.Unpack(acronym, &acronyms); err != nil {
